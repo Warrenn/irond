@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "irond", "irond\irond.csproj", "{708BBE8A-D6EF-4655-812F-25BA3E6F9DBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrammarLibrary", "GrammarLibrary\GrammarLibrary.csproj", "{9CDBDF82-296F-40DB-82A4-C830DDC3FADC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{708BBE8A-D6EF-4655-812F-25BA3E6F9DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{708BBE8A-D6EF-4655-812F-25BA3E6F9DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{708BBE8A-D6EF-4655-812F-25BA3E6F9DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{708BBE8A-D6EF-4655-812F-25BA3E6F9DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CDBDF82-296F-40DB-82A4-C830DDC3FADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CDBDF82-296F-40DB-82A4-C830DDC3FADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CDBDF82-296F-40DB-82A4-C830DDC3FADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CDBDF82-296F-40DB-82A4-C830DDC3FADC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
