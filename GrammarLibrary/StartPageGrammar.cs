@@ -8,7 +8,7 @@ namespace GrammarLibrary
 
         public StartPageGrammar() : base(false)
         {
-            var numberLiteral = new NumberLiteral("number")
+            var numberLiteral = new NumberLiteral("Number")
             {
                 DefaultIntTypes = new[]
                 {
@@ -17,8 +17,8 @@ namespace GrammarLibrary
                     (TypeCode) 30
                 }
             };
-            var identifierTerminal = new IdentifierTerminal("identifier");
-            var stringLiteral = new StringLiteral("string", "\"", StringOptions.AllowsAllEscapes);
+            var identifierTerminal = new IdentifierTerminal("Identifier");
+            var stringLiteral = new StringLiteral("String", "\"", StringOptions.AllowsAllEscapes);
             stringLiteral.AddStartEnd("'", StringOptions.AllowsAllEscapes);
             var expression = new NonTerminal("Expr");
             SnippetRoots.Add(expression);
@@ -56,10 +56,10 @@ namespace GrammarLibrary
             RegisterOperators(15, "and", "or");
             RegisterOperators(20, "<", "<=", ">", ">=", "is", "is not");
             RegisterOperators(60, "not");
-            MarkPunctuation("(", ")", "[", "]", "the");
+            MarkPunctuation("(", ")", "[", "]", "the", "when", "set", "to");
             RegisterBracePair("(", ")");
             RegisterBracePair("[", "]");
-            MarkTransient(term, expression, statement, binOp, unOp, parExpr);
+            MarkTransient(term, expression, statement, binOp, unOp, parExpr, actionOp, objectRef, whenCondition);
             AddToNoReportGroup(NewLine);
             LanguageFlags = (LanguageFlags.NewLineBeforeEOF | LanguageFlags.SupportsBigInt);
         }
