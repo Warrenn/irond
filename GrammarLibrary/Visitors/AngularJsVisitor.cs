@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Web;
-using GrammarLibrary;
 using Irony.Parsing;
 
-namespace irond
+namespace GrammarLibrary.Visitors
 {
-    public class Visitor : NodeVisitor<string>
+    public class AngularJsVisitor : NodeVisitor<string>
     {
         public string VisitNumber(ParseTreeNode node, object context)
         {
@@ -17,7 +14,7 @@ namespace irond
 
         public string VisitIdentifier(ParseTreeNode node, object context)
         {
-            var prefix = (context as VisitContext)?.Prefix;
+            var prefix = (context as JsVisitorContext)?.Prefix;
             return $"{prefix}{node.Token.Text}";
         }
 
@@ -28,7 +25,7 @@ namespace irond
 
         public string VisitMemberAccess(ParseTreeNode node, object context)
         {
-            var prefix = (context as VisitContext)?.Prefix;
+            var prefix = (context as JsVisitorContext)?.Prefix;
             var objectString = Visit(node.ChildNodes[0]);
             var propertyString = Visit(node.ChildNodes[2]);
             return $"{prefix}{objectString}.{propertyString}";
@@ -38,7 +35,7 @@ namespace irond
         {
             var actionExp = node.ChildNodes[0];
             var property = actionExp.ChildNodes[0].Token.Text;
-            var newContext = new VisitContext {Prefix = "vm."};
+            var newContext = new JsVisitorContext {Prefix = "vm."};
             var member = Visit(actionExp.ChildNodes[1], newContext);
             var evalExp = Visit(node.ChildNodes[1]);
             var returnValue =
@@ -48,13 +45,13 @@ namespace irond
                 "       return true;\r\n" +
                 "   }\r\n" +
                 "   return false;\r\n" +
-                "}});";
+                "}});\r\n";
             return returnValue;
         }
 
         public string VisitAssignmentStmt(ParseTreeNode node, object context)
         {
-            var newContext = new VisitContext { Prefix = "vm." };
+            var newContext = new JsVisitorContext { Prefix = "vm." };
             var fullPropertyExp = Visit(node.ChildNodes[0], newContext);
             var lastIdentifier = fullPropertyExp.LastIndexOf('.');
             var member = fullPropertyExp.Substring(0, lastIdentifier);
@@ -69,13 +66,13 @@ namespace irond
                 $"       return {newvalue};\r\n" +
                 "   }\r\n" +
                 "   return null;\r\n" +
-                "}});";
+                "}});\r\n";
             return returnValue;
         }
 
         public string VisitBinExpr(ParseTreeNode node, object context)
         {
-            var newContext = new VisitContext {Prefix = "vm."};
+            var newContext = new JsVisitorContext {Prefix = "vm."};
             var left = Visit(node.ChildNodes[0], newContext);
             var op = node.ChildNodes[1];
             var right = Visit(node.ChildNodes[2], newContext);

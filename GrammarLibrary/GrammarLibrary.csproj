@@ -44,11 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NodeVisitor.cs" />
-    <Compile Include="StartPageGrammar.cs" />
-    <Compile Include="StartQAGrammar.cs" />
+    <Compile Include="Visitors\NodeVisitor.cs" />
+    <Compile Include="Gammars\StartPageGrammar.cs" />
+    <Compile Include="Gammars\StartQAGrammar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VisitAttribute.cs" />
+    <Compile Include="Visitors\VisitAttribute.cs" />
+    <Compile Include="Visitors\JsVisitorContext.cs" />
+    <Compile Include="Visitors\AngularJsVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

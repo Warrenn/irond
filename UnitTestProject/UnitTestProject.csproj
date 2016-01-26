@@ -62,10 +62,6 @@
       <Project>{9cdbdf82-296f-40db-82a4-c830ddc3fadc}</Project>
       <Name>GrammarLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\irond\irond.csproj">
-      <Project>{708bbe8a-d6ef-4655-812f-25ba3e6f9dbb}</Project>
-      <Name>irond</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

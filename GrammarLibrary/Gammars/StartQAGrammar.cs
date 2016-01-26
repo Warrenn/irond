@@ -1,7 +1,7 @@
 ﻿using System;
 using Irony.Parsing;
 
-namespace GrammarLibrary
+namespace GrammarLibrary.Gammars
 {
     public class StartQAGrammar : Grammar
     {

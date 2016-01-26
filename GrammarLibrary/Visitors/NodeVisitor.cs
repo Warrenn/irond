@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Irony.Parsing;
 
-namespace GrammarLibrary
+namespace GrammarLibrary.Visitors
 {
     public abstract class NodeVisitor<T>
     {
