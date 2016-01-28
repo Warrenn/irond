@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GrammarLibrary.Visitors
+namespace Irony.Visitor
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class VisitAttribute : Attribute

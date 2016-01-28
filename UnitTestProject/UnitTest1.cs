@@ -1,7 +1,4 @@
-﻿using System;
-using GrammarLibrary;
-using GrammarLibrary.Gammars;
-using irond;
+﻿using GrammarLibrary;
 using Irony.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,7 +14,7 @@ namespace UnitTestProject
 
             //mygrammar.
             var parser = new Parser(mygrammar);
-            var visitor = new Visitor();
+            var visitor = new AngularJsVisitor();
             var testStatements =
                 "Hide a when Quote.QuoteType.super is not 'new Business' \r\n" +
                 "Hide Question2 when Quote.Salary <= 1000 and Quote.QuoteType is SuperFund\r\n" +

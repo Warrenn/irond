@@ -1,7 +1,7 @@
 ﻿using System;
 using Irony.Parsing;
 
-namespace GrammarLibrary.Gammars
+namespace GrammarLibrary
 {
     public class StartPageGrammar : Grammar
     {
@@ -13,8 +13,7 @@ namespace GrammarLibrary.Gammars
                 DefaultIntTypes = new[]
                 {
                     TypeCode.Int32,
-                    TypeCode.Int64,
-                    (TypeCode) 30
+                    TypeCode.Int64
                 }
             };
             var identifierTerminal = new IdentifierTerminal("Identifier");
@@ -36,9 +35,19 @@ namespace GrammarLibrary.Gammars
             var whenCondition = new NonTerminal("WhenCondition");
             var actionExpr = new NonTerminal("ActionExpr");
             var actionStmt = new NonTerminal("ActionStmt");
+            var questionTerm = new NonTerminal("QuestionTerm");
+            var answerTerm = new NonTerminal("AnswerTerm");
+            var objectIdentifier = new NonTerminal("ObjectIdentifier");
+            var setObjectIdentifier = new NonTerminal("SetObjectIdentifier");
+            var qaIdentifier = new NonTerminal("QAIdentifier");
+            var qaProperty = new NonTerminal("QAProperty");
 
-            actionOp.Rule = ToTerm("Hide") | "Disable";
-            actionExpr.Rule = actionOp + objectRef;
+            objectIdentifier.Rule = objectRef | qaIdentifier;
+            setObjectIdentifier.Rule = objectRef | qaProperty;
+            qaIdentifier.Rule = questionTerm | answerTerm;
+            qaProperty.Rule = qaIdentifier + PreferShiftHere()  + "'s " + identifierTerminal;
+            actionOp.Rule = ToTerm("hide") | "disable";
+            actionExpr.Rule = actionOp + ToTerm("the").Q() + objectIdentifier;
             actionStmt.Rule = actionExpr + whenCondition;
             whenCondition.Rule = (ToTerm("when") + expression);
             expression.Rule = (term | binExpr);
@@ -48,18 +57,21 @@ namespace GrammarLibrary.Gammars
             binExpr.Rule = expression + binOp + expression;
             binOp.Rule = (ToTerm("is") | "is not" | "<" | "<=" | ">" | ">=" | "and" | "or");
             memberAccess.Rule = expression + PreferShiftHere() + "." + identifierTerminal;
-            assignmentStmt.Rule = ToTerm("set") + objectRef + "to" + expression + whenCondition;
+            assignmentStmt.Rule = ToTerm("set") + ToTerm("the").Q() + setObjectIdentifier + "to" + expression + whenCondition;
             statement.Rule = (assignmentStmt | actionStmt | expression | Empty);
             objectRef.Rule = (identifierTerminal | memberAccess);
             program.Rule = MakePlusRule(program, NewLine, statement);
+            answerTerm.Rule = questionTerm + identifierTerminal + ToTerm("answer");
+            questionTerm.Rule = identifierTerminal + ToTerm("question");
             Root = program;
             RegisterOperators(15, "and", "or");
             RegisterOperators(20, "<", "<=", ">", ">=", "is", "is not");
             RegisterOperators(60, "not");
-            MarkPunctuation("(", ")", "[", "]", "the", "when", "set", "to");
+            MarkPunctuation("(", ")", "[", "]", "the", "when", "set", "to", "question", "answer");
             RegisterBracePair("(", ")");
             RegisterBracePair("[", "]");
-            MarkTransient(term, expression, statement, binOp, unOp, parExpr, actionOp, objectRef, whenCondition);
+            MarkTransient(term, expression, statement, binOp, unOp, parExpr, actionOp, objectRef, whenCondition,
+                objectIdentifier, setObjectIdentifier, qaIdentifier);
             AddToNoReportGroup(NewLine);
             LanguageFlags = (LanguageFlags.NewLineBeforeEOF | LanguageFlags.SupportsBigInt);
         }

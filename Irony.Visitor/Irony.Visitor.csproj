@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9CDBDF82-296F-40DB-82A4-C830DDC3FADC}</ProjectGuid>
+    <ProjectGuid>{635D8C13-42D3-40CD-8404-37E2EC53C05C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GrammarLibrary</RootNamespace>
-    <AssemblyName>GrammarLibrary</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Irony.Visitor</RootNamespace>
+    <AssemblyName>Irony.Visitor</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -45,19 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="StartPageGrammar.cs" />
+    <Compile Include="NodeVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="JsVisitorContext.cs" />
-    <Compile Include="AngularJsVisitor.cs" />
+    <Compile Include="VisitAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Irony.Visitor\Irony.Visitor.csproj">
-      <Project>{635d8c13-42d3-40cd-8404-37e2ec53c05c}</Project>
-      <Name>Irony.Visitor</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

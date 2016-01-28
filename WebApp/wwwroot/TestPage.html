@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <meta charset="utf-8"/>
+    <title></title>
+    <script src="angular/angular.min.js"></script>
+</head>
+<body>
+<div ng-controller="ctrl as vm">
+    <div ng-repeat="(key,question) in vm.questions">
+        <div ng-include="question.type"></div>
+    </div>
+    {{vm.quote}}
+</div>
+<script>
+    angular
+        .module('app', [])
+        .controller('ctrl', function() {
+            var vm = this;
+            vm.questions = {
+                product: {
+                    type: 'radio',
+                    text: 'Select A Product',
+                    answers: {
+                        superFundEasy: { text: 'Super Fund Easy' },
+                        superFundChoice: { text: 'Choice', description: 'Fund Choice allows more options' },
+                        superFundCustom: { text: 'Super Fund Custom', description: 'Get Super Fund with all the custom trimmings' }
+                    }
+                },
+                risk: {
+                    type: 'select',
+                    text: 'What Risk Profile',
+                    answers: {
+                        risk: { text: 'Risk Only' },
+                        retirement: { text: 'Retirement Only' },
+                        riskRetirement: { text: 'Risk and Retirement' }
+                    }
+                },
+                riskProvider: {
+                    text: 'Who is the Risk Provider',
+                    type: 'radio',
+                    answers: {
+                        superFund: { text: 'Super Fund' },
+                        external: { text: 'External' }
+                    }
+                },
+                riskBeingTransfered: {
+                    text: 'Is the Risk being Transfered?',
+                    type: 'radio',
+                    answers: {
+                        yes: { text: 'Yes' },
+                        no: { text: 'No' }
+                    }
+                },
+                doubleQuote: {
+                    type: 'text',
+                    text: 'Enter a money amount'
+                }
+            };
+            vm.quote = {};
+
+            Object.defineProperty(vm.questions.doubleQuote, 'hide', {
+                get: function() {
+                    return (vm.quote.product === 'superFundEasy');
+                }
+            });
+
+            Object.defineProperty(vm.questions.product.answers.superFundCustom, 'disabled', {
+                get: function() {
+                    return (vm.quote.riskBeingTransfered === 'yes');
+                }
+            });
+
+            return vm;
+        });
+</script>
+<script type="text/ng-template" id="text">
+        <div class="question" ng-hide="question.hide">
+            <div class="field">
+                <span class="bold_labels"><span class="data_helper">{{question.text}}</span></span>
+            </div>
+            <div class="field answer">
+                <input type="text" name="{{question.name}}" ng-model="vm.quote[key]" required />
+            </div>
+        </div>
+    </script>
+<script type="text/ng-template" id="select">
+        <div class="question" ng-hide="question.hide">
+            <div class="field">
+                <span class="bold_labels">
+                    <span class="data_helper">{{question.text}}</span>
+                </span>
+            </div>
+            <div class="field answer">
+                <select name="{{question.name}}" ng-model="vm.quote[key]" required>
+                    <option ng-repeat="(answerKey,answer) in question.answers track by answerKey" value="{{answerKey}}">{{answer.text}}</option>
+                </select>
+            </div>
+        </div>
+    </script>
+<script type="text/ng-template" id="radio">
+        <div class="question" ng-hide="question.hide">
+            <div class="field">
+                <span class="bold_labels"><span class="data_helper">{{question.text}}</span></span>
+            </div>
+            <div class="field answer">
+                <label ng-repeat="(answerKey,answer) in question.answers track by answerKey">
+                    <input type="radio" ng-model="vm.quote[key]" ng-value="answerKey" ng-disabled="answer.disabled" />{{answerKey}}
+                </label>
+           </div>
+        </div>
+    </script>
+</body>
+</html>
