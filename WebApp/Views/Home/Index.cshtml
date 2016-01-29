@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model WebApp.Models.QAModel
 
 @{
     Layout = null;
@@ -8,6 +8,14 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    <style>
+        .question {
+            padding: 5px;
+            border: 1px solid gray;
+            margin: 10px;
+            border-radius: 3px;
+        }
+    </style>
     <script src="angular/angular.min.js"></script>
 </head>
 <body>
@@ -18,56 +26,24 @@
         {{vm.quote}}
     </div>
     <script>
-    angular
-        .module('app', [])
-        .controller('ctrl', function() {
-            var vm = this;
-            vm.questions = {
-                product: {
-                    type: 'radio',
-                    text: 'Select A Product',
-                    answers: {
-                        superFundEasy: { text: 'Super Fund Easy' },
-                        superFundChoice: { text: 'Choice', description: 'Fund Choice allows more options' },
-                        superFundCustom: { text: 'Super Fund Custom', description: 'Get Super Fund with all the custom trimmings' }
-                    }
-                },
-                risk: {
-                    type: 'select',
-                    text: 'What Risk Profile',
-                    answers: {
-                        risk: { text: 'Risk Only' },
-                        retirement: { text: 'Retirement Only' },
-                        riskRetirement: { text: 'Risk and Retirement' }
-                    }
-                },
-                riskProvider: {
-                    text: 'Who is the Risk Provider',
-                    type: 'radio',
-                    answers: {
-                        superFund: { text: 'Super Fund' },
-                        external: { text: 'External' }
-                    }
-                },
-                riskBeingTransfered: {
-                    text: 'Is the Risk being Transfered?',
-                    type: 'radio',
-                    answers: {
-                        yes: { text: 'Yes' },
-                        no: { text: 'No' }
-                    }
-                },
-                doubleQuote: {
-                    type: 'text',
-                    text: 'Enter a money amount'
+        angular
+            .module('app', [])
+            .controller('ctrl', function($scope, $timeout) {
+                var vm = this;
+                vm.lessQuestions = {
+                    bugger: { text: 'Bugger Off you sod' }
                 }
-            };
-            vm.quote = {};
+                vm.questions = @Html.Raw(Model.Questions);
+                vm.quote = {};
 
-            @Html.Raw(Model)
+                $scope.$watch('vm.quote', function() {
+                    $timeout(function() {
+                        @Html.Raw(Model.Rules)
+                    });
+                }, true);
 
-            return vm;
-        });
+                return vm;
+            });
     </script>
     <script type="text/ng-template" id="text">
         <div class="question" ng-hide="question.hide">

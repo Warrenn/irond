@@ -1,0 +1,54 @@
+﻿{
+  "product": {
+    "type": "radio",
+    "text": "Select a Product",
+    "answers": {
+      "superFundEasy": { "text": "SuperFund Easy" },
+      "superFundChoice": {
+        "text": "Choice",
+        "description": "Fund Choice allow more options"
+      },
+      "superFundCustom": {
+        "text": "Super Fund Custom",
+        "description": "Get Super Fund with all the custom trimmings"
+      }
+    }
+  },
+  "risk": {
+    "type": "select",
+    "text": "What Risk Profile",
+    "answers": {
+      "risk": { "text": "Risk Only" },
+      "retirement": { "text": "Retirement Only" },
+      "riskRetirement": { "text": "Risk and Retirement" }
+    }
+  },
+  "riskProvider": {
+    "text": "Who is the Risk Provider",
+    "type": "radio",
+    "answers": {
+      "superFund": { "text": "Super Fund" },
+      "external": { "text": "External" }
+    }
+  },
+  "riskBeingTransfered": {
+    "text": "Is the Risk being Transfered?",
+    "type": "radio",
+    "answers": {
+      "yes": { "text": "Yes" },
+      "no": { "text": "No" }
+    }
+  },
+  "doublequote": {
+    "text": "Do you want to be double quoted?",
+    "type": "radio",
+    "answers": {
+      "yes": { "text": "Yes" },
+      "no": { "text": "No" }
+    }
+  },
+  "money": {
+    "type": "text",
+    "text": "Enter a money amount"
+  }
+}

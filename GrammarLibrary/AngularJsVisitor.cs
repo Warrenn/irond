@@ -9,15 +9,15 @@ namespace GrammarLibrary
     public class AngularJsVisitor : NodeVisitor<string>
     {
         private readonly JsVisitorContext vistorContext;
+        private readonly string answersProperty;
+        private readonly string questionsProperty;
 
         public AngularJsVisitor(string prefix, string questionsProperty, string answersProperty)
         {
-            vistorContext = new JsVisitorContext
-            {
-                Prefix = prefix,
-                AnswersProperty = answersProperty,
-                QuestionsProperty = questionsProperty
-            };
+            vistorContext = new JsVisitorContext {Prefix = prefix};
+
+            this.answersProperty = answersProperty;
+            this.questionsProperty = questionsProperty;
         }
 
         public AngularJsVisitor() : this("vm.", "questions", "answers")
@@ -49,7 +49,6 @@ namespace GrammarLibrary
         {
             var jsContext = (context as JsVisitorContext);
             var prefix = jsContext?.Prefix;
-            var answersProperty = jsContext?.AnswersProperty;
             var questionIdentifier = Visit(node.ChildNodes[0]);
             var propertyString = Visit(node.ChildNodes[1]);
 
@@ -60,7 +59,6 @@ namespace GrammarLibrary
         {
             var jsContext = (context as JsVisitorContext);
             var prefix = jsContext?.Prefix;
-            var questionsProperty = jsContext?.QuestionsProperty;
             var identifier = Visit(node.ChildNodes[0]);
 
             return $"{prefix}{questionsProperty}.{identifier}";
@@ -74,6 +72,11 @@ namespace GrammarLibrary
         }
 
         public string VisitString(ParseTreeNode node, object context)
+        {
+            return node.Token.Text;
+        }
+
+        public string VisitConstant(ParseTreeNode node, object context)
         {
             return ToCammelCase(node.Token.Text);
         }
@@ -97,6 +100,8 @@ namespace GrammarLibrary
             return 
                 $"   if({evalExp}){{\r\n" +
                 $"       {member}.{property} = true;\r\n" +
+                "  }else{" +
+                $"       {member}.{property} = false;\r\n" +
                 "   }\r\n";
         }
 

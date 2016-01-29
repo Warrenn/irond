@@ -13,14 +13,15 @@ namespace GrammarLibrary
                 DefaultIntTypes = new[]
                 {
                     TypeCode.Int32,
-                    TypeCode.Int64
+                    TypeCode.Int64,
+                    TypeCode.Int16, 
+                    TypeCode.Decimal, 
+                    TypeCode.Double
                 }
             };
             var identifierTerminal = new IdentifierTerminal("Identifier");
             var stringLiteral = new StringLiteral("String", "\"", StringOptions.AllowsAllEscapes);
-            stringLiteral.AddStartEnd("'", StringOptions.AllowsAllEscapes);
             var expression = new NonTerminal("Expr");
-            SnippetRoots.Add(expression);
             var term = new NonTerminal("Term");
             var binExpr = new NonTerminal("BinExpr");
             var parExpr = new NonTerminal("ParExpr");
@@ -41,35 +42,77 @@ namespace GrammarLibrary
             var setObjectIdentifier = new NonTerminal("SetObjectIdentifier");
             var qaIdentifier = new NonTerminal("QAIdentifier");
             var qaProperty = new NonTerminal("QAProperty");
+            var constantTerminal = new ConstantTerminal("Constant");
 
-            objectIdentifier.Rule = objectRef | qaIdentifier;
-            setObjectIdentifier.Rule = objectRef | qaProperty;
-            qaIdentifier.Rule = questionTerm | answerTerm;
+            stringLiteral.AddStartEnd("'", StringOptions.AllowsAllEscapes);
+            SnippetRoots.Add(expression);
+
+            objectIdentifier.Rule = 
+                objectRef 
+                | qaIdentifier;
+            setObjectIdentifier.Rule = 
+                objectRef 
+                | qaProperty;
+            qaIdentifier.Rule = 
+                questionTerm 
+                | answerTerm;
+            expression.Rule =
+                term
+                | binExpr;
+            term.Rule =
+                numberLiteral
+                | parExpr
+                | stringLiteral
+                | identifierTerminal
+                | memberAccess
+                | constantTerminal
+                | qaProperty;
+            binOp.Rule =
+                ToTerm("is")
+                | "is not"
+                | "<"
+                | "<="
+                | ">"
+                | ">="
+                | "and"
+                | "or";
+            actionOp.Rule = 
+                ToTerm("hide") 
+                | "disable";
+            statement.Rule =
+                assignmentStmt
+                | actionStmt
+                | Empty;
+            objectRef.Rule =
+                identifierTerminal
+                | memberAccess;
+
             qaProperty.Rule = qaIdentifier + PreferShiftHere()  + "'s " + identifierTerminal;
-            actionOp.Rule = ToTerm("hide") | "disable";
             actionExpr.Rule = actionOp + ToTerm("the").Q() + objectIdentifier;
             actionStmt.Rule = actionExpr + whenCondition;
             whenCondition.Rule = (ToTerm("when") + expression);
-            expression.Rule = (term | binExpr);
-            term.Rule = (numberLiteral | parExpr | stringLiteral | identifierTerminal | memberAccess);
             parExpr.Rule = "(" + expression + ")";
-            unOp.Rule = (ToTerm("not"));
+            unOp.Rule = ToTerm("not");
             binExpr.Rule = expression + binOp + expression;
-            binOp.Rule = (ToTerm("is") | "is not" | "<" | "<=" | ">" | ">=" | "and" | "or");
             memberAccess.Rule = expression + PreferShiftHere() + "." + identifierTerminal;
             assignmentStmt.Rule = ToTerm("set") + ToTerm("the").Q() + setObjectIdentifier + "to" + expression + whenCondition;
-            statement.Rule = (assignmentStmt | actionStmt | expression | Empty);
-            objectRef.Rule = (identifierTerminal | memberAccess);
             program.Rule = MakePlusRule(program, NewLine, statement);
             answerTerm.Rule = questionTerm + identifierTerminal + ToTerm("answer");
             questionTerm.Rule = identifierTerminal + ToTerm("question");
+
             Root = program;
+
+            constantTerminal.Add("true", true);
+            constantTerminal.Add("null", null);
+            constantTerminal.Add("undefined", null);
+            constantTerminal.Add("false", false);
             RegisterOperators(15, "and", "or");
             RegisterOperators(20, "<", "<=", ">", ">=", "is", "is not");
             RegisterOperators(60, "not");
             MarkPunctuation("(", ")", "[", "]", "the", "when", "set", "to", "question", "answer");
             RegisterBracePair("(", ")");
             RegisterBracePair("[", "]");
+
             MarkTransient(term, expression, statement, binOp, unOp, parExpr, actionOp, objectRef, whenCondition,
                 objectIdentifier, setObjectIdentifier, qaIdentifier);
             AddToNoReportGroup(NewLine);

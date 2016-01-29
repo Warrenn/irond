@@ -1,0 +1,8 @@
+﻿Hide the money Question when quote.product is 'superFundChoice'
+Disable the Product Question SuperFundCustom Answer when quote.riskBeingTransfered is 'yes'
+Set the Product Question's text to 'Can I do more?' when (quote.riskBeingTransfered is 'yes') and (quote.product is 'superFundCustom')
+Set the Quote.Product to 'superFundEasy' when (quote.riskBeingTransfered is 'yes') and (quote.product is 'superFundCustom')
+Set Product Question's text to 'Select A Product' when (Product Question SuperFundCustom Answer's disable is false)
+Set money Question's text to 'wow thats alot' when (quote.money > 5000)
+Set money Question's text to 'Enter a money amount' when (quote.money <= 5000)
+Hide doublequote Question when quote.money < 6000 or quote.money is null
