@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net46": {
+      "wrappedProject": "../../GrammarLibrary/GrammarLibrary.csproj",
+      "bin": {
+        "assembly": "../../GrammarLibrary/obj/{configuration}/GrammarLibrary.dll",
+        "pdb": "../../GrammarLibrary/obj/{configuration}/GrammarLibrary.pdb"
+      },
+      "dependencies": {
+        "Irony": "0.9.1"
+      }
+    },
+    "net45": {
+      "wrappedProject": "../../GrammarLibrary/GrammarLibrary.csproj",
+      "bin": {
+        "assembly": "../../GrammarLibrary/obj/{configuration}/GrammarLibrary.dll",
+        "pdb": "../../GrammarLibrary/obj/{configuration}/GrammarLibrary.pdb"
+      },
+      "dependencies": {
+        "Irony": "0.9.1",
+        "Irony.Visitor": "1.0.0-*"
+      }
+    }
+  }
+}

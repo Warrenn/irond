@@ -39,15 +39,14 @@
       "no": { "text": "No" }
     }
   },
-  "doublequote": {
-    "text": "Do you want to be double quoted?",
+  "doubleqoute": {
+    "text": "do you want a double quote",
     "type": "radio",
     "answers": {
       "yes": { "text": "Yes" },
       "no": { "text": "No" }
     }
-  },
-  "money": {
+  },  "money": {
     "type": "text",
     "text": "Enter a money amount"
   }

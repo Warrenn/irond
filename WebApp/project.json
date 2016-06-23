@@ -1,11 +1,12 @@
-﻿{
+{
   "webroot": "wwwroot",
   "version": "1.0.0-*",
 
   "dependencies": {
     "Microsoft.AspNet.Server.IIS": "1.0.0-beta5",
     "Microsoft.AspNet.Server.WebListener": "1.0.0-beta5",
-    "Microsoft.AspNet.Mvc": "6.0.0-beta5"
+    "Microsoft.AspNet.Mvc": "6.0.0-beta5",
+    "Microsoft.AspNet.WebApi.SelfHost": "5.2.3"
   },
 
   "commands": {
@@ -16,6 +17,9 @@
     "dnx451": {
       "dependencies": {
         "GrammarLibrary": "1.0.0-*"
+      },
+      "frameworkAssemblies": {
+        "System.ServiceModel": "4.0.0.0"
       }
     }
   },

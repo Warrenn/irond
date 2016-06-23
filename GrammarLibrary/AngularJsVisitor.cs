@@ -8,14 +8,13 @@ namespace GrammarLibrary
 {
     public class AngularJsVisitor : NodeVisitor<string>
     {
-        private readonly JsVisitorContext vistorContext;
+        private readonly string prefix;
         private readonly string answersProperty;
         private readonly string questionsProperty;
 
         public AngularJsVisitor(string prefix, string questionsProperty, string answersProperty)
         {
-            vistorContext = new JsVisitorContext {Prefix = prefix};
-
+            this.prefix = prefix;
             this.answersProperty = answersProperty;
             this.questionsProperty = questionsProperty;
         }
@@ -33,11 +32,10 @@ namespace GrammarLibrary
 
         public string VisitQAProperty(ParseTreeNode node, object context)
         {
-            var prefix = (context as JsVisitorContext)?.Prefix;
             var objectString = Visit(node.ChildNodes[0]);
             var propertyString = Visit(node.ChildNodes[2]);
 
-            return $"{prefix}{objectString}.{propertyString}";
+            return $"{context}{objectString}.{propertyString}";
         }
 
         public string VisitNumber(ParseTreeNode node, object context)
@@ -47,28 +45,22 @@ namespace GrammarLibrary
 
         public string VisitAnswerTerm(ParseTreeNode node, object context)
         {
-            var jsContext = (context as JsVisitorContext);
-            var prefix = jsContext?.Prefix;
             var questionIdentifier = Visit(node.ChildNodes[0]);
             var propertyString = Visit(node.ChildNodes[1]);
 
-            return $"{prefix}{questionIdentifier}.{answersProperty}.{propertyString}";
+            return $"{context}{questionIdentifier}.{answersProperty}.{propertyString}";
         }
 
         public string VisitQuestionTerm(ParseTreeNode node, object context)
         {
-            var jsContext = (context as JsVisitorContext);
-            var prefix = jsContext?.Prefix;
             var identifier = Visit(node.ChildNodes[0]);
 
-            return $"{prefix}{questionsProperty}.{identifier}";
+            return $"{context}{questionsProperty}.{identifier}";
         }
 
         public string VisitIdentifier(ParseTreeNode node, object context)
         {
-            var prefix = (context as JsVisitorContext)?.Prefix;
-
-            return $"{prefix}{ToCammelCase(node.Token.Text)}";
+            return $"{context}{ToCammelCase(node.Token.Text)}";
         }
 
         public string VisitString(ParseTreeNode node, object context)
@@ -83,18 +75,17 @@ namespace GrammarLibrary
 
         public string VisitMemberAccess(ParseTreeNode node, object context)
         {
-            var prefix = (context as JsVisitorContext)?.Prefix;
             var objectString = Visit(node.ChildNodes[0]);
             var propertyString = Visit(node.ChildNodes[2]);
 
-            return $"{prefix}{objectString}.{propertyString}";
+            return $"{context}{objectString}.{propertyString}";
         }
 
         public string VisitActionStmt(ParseTreeNode node, object context)
         {
             var actionExp = node.ChildNodes[0];
             var property = ToCammelCase(actionExp.ChildNodes[0].Token.Text);
-            var member = Visit(actionExp.ChildNodes[2], vistorContext);
+            var member = Visit(actionExp.ChildNodes[2], prefix);
             var evalExp = Visit(node.ChildNodes[1]);
 
             return 
@@ -107,8 +98,8 @@ namespace GrammarLibrary
 
         public string VisitAssignmentStmt(ParseTreeNode node, object context)
         {
-            var fullPropertyExp = Visit(node.ChildNodes[1], vistorContext);
-            var newvalue = Visit(node.ChildNodes[2], vistorContext);
+            var fullPropertyExp = Visit(node.ChildNodes[1], prefix);
+            var newvalue = Visit(node.ChildNodes[2], prefix);
             var evalExp = Visit(node.ChildNodes[3]);
 
            return
@@ -119,9 +110,9 @@ namespace GrammarLibrary
 
         public string VisitBinExpr(ParseTreeNode node, object context)
         {
-            var left = Visit(node.ChildNodes[0], vistorContext);
+            var left = Visit(node.ChildNodes[0], prefix);
             var op = node.ChildNodes[1];
-            var right = Visit(node.ChildNodes[2], vistorContext);
+            var right = Visit(node.ChildNodes[2], prefix);
 
             switch (op.Token.Text)
             {

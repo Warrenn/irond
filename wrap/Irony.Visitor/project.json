@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net40": {
+      "wrappedProject": "../../Irony.Visitor/Irony.Visitor.csproj",
+      "bin": {
+        "assembly": "../../Irony.Visitor/obj/{configuration}/Irony.Visitor.dll",
+        "pdb": "../../Irony.Visitor/obj/{configuration}/Irony.Visitor.pdb"
+      },
+      "dependencies": {
+        "Irony": "0.9.1",
+        "System.Net.Http": "1.0.0-*"
+      }
+    }
+  }
+}

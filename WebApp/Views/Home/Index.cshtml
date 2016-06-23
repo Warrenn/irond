@@ -30,9 +30,6 @@
             .module('app', [])
             .controller('ctrl', function($scope, $timeout) {
                 var vm = this;
-                vm.lessQuestions = {
-                    bugger: { text: 'Bugger Off you sod' }
-                }
                 vm.questions = @Html.Raw(Model.Questions);
                 vm.quote = {};
 
